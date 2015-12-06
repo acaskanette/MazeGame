@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\GameEngine.vcxproj", "{B37A4F14-812D-4E44-B140-047957072509}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MazeGame", "MazeGame\MazeGame.vcxproj", "{090F790C-0528-493B-9C80-0EECEBEF5A25}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B37A4F14-812D-4E44-B140-047957072509} = {B37A4F14-812D-4E44-B140-047957072509}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

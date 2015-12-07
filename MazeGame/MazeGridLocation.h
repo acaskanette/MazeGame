@@ -1,6 +1,11 @@
 #pragma once
 
+#include "Cube2.h"
 #include "Cube.h"
+#include "FloorFace.h"
+#include "FloorStart.h"
+#include "FloorEnd.h"
+#include "Wall.h"
 
 enum MazeObjectType {
 	MAZE_FLOOR, MAZE_WALL, MAZE_START, MAZE_END, MAZE_OBJECT1, MAZE_OBJECT2

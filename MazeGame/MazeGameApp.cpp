@@ -2,7 +2,7 @@
 #include "MazeGrid.h"
 
 
-GLfloat camX = 0.0F, camY = 0.0F, camZ = 15.0F;
+GLfloat camX = 0.0F, camY = 35.0F, camZ = 35.0F;
 GLfloat lookAtX = 0.0F, lookAtY = 0.0F, lookAtZ = 0.0F;
 
 //GLfloat parentAngle = 0.0F, child1Angle = 0.0F, child2Angle = 0.0F;
@@ -22,24 +22,13 @@ void MazeGameApp::Initialize() {
 	mazeGrid->rootObject->SetRotationAxis(glm::vec3(1, 0, 0));
 	// Add and Set Relative Positions of mazeGridObjects
 	for (int i = 0; i < GRIDSIZE*GRIDSIZE; i++) {
-		Add(mazeGrid->GridByIndex(i)->GameMesh(), mazeGrid->rootObject);
-		mazeGrid->GridByIndex(i)->GameMesh()->SetLocalPosition( glm::vec3( i % GRIDSIZE, 0.f, i / GRIDSIZE ) );
+		if (mazeGrid->GridByIndex(i)->GameMesh()) {
+			Add(mazeGrid->GridByIndex(i)->GameMesh(), mazeGrid->rootObject);
+			mazeGrid->GridByIndex(i)->GameMesh()->SetLocalPosition(glm::vec3((i % GRIDSIZE)*2.0f, 0.f, (i / GRIDSIZE)*2.0f));
+		}
 	}
-
-	//pikachuParent = new Cube(m_renderer);
-	//pikachuChild1 = new Cube(m_renderer);
-	//pikachuChild2 = new Cube(m_renderer);
-
-	//Add(pikachuParent); // Add a game object to the scene
-	//Add(pikachuChild1, pikachuParent); // Add as a child of pikachuParent
-	//Add(pikachuChild2, pikachuParent);
-
-	//pikachuParent->SetLocalPosition(glm::vec3(0.0F, 1.0F, 0.0F));   // Positioned 0, 1, 0 in world space
-	//pikachuChild1->SetLocalPosition(glm::vec3(-4.0F, -4.0F, 0.0F)); // Positioned -4, -2, 0 relative to the parent
-	//pikachuChild2->SetLocalPosition(glm::vec3(4.0F, 4.0F, 0.0F));
-
-	//pikachuParent->SetRotationAxis(glm::vec3(1, 0, 0));
 }
+
 
 void MazeGameApp::Update() {
 	SDL_Event e;

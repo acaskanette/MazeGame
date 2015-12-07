@@ -47,14 +47,25 @@ void MazeGridLocation::SetDefaultGameMesh(AbstractRenderer* _renderer) {
 
 	switch (objectType) {
 	case MAZE_WALL:
-		gameMesh = new Cube(_renderer);
+		gameMesh = new Wall(_renderer);
 		break;
 	case MAZE_START:
+		gameMesh = new FloorStart(_renderer);
+		break;
 	case MAZE_END:
+		gameMesh = new FloorEnd(_renderer);
+		break;
 	case MAZE_FLOOR:
+		gameMesh = new FloorFace(_renderer);
+		break;
 	case MAZE_OBJECT1:
+		gameMesh = new Cube(_renderer);
+		break;
 	case MAZE_OBJECT2:
+		gameMesh = new Cube2(_renderer);
+		break;
 	default:
+		gameMesh = new FloorFace(_renderer);
 		break;
 	}
 

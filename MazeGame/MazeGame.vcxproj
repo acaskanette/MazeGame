@@ -151,18 +151,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cube2.cpp" />
     <ClCompile Include="DemoApp3.cpp" />
+    <ClCompile Include="FloorEnd.cpp" />
+    <ClCompile Include="FloorFace.cpp" />
+    <ClCompile Include="FloorStart.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MazeGameApp.cpp" />
     <ClCompile Include="MazeGrid.cpp" />
     <ClCompile Include="MazeGridLocation.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cube2.h" />
     <ClInclude Include="DemoApp3.h" />
+    <ClInclude Include="FloorEnd.h" />
+    <ClInclude Include="FloorFace.h" />
+    <ClInclude Include="FloorStart.h" />
     <ClInclude Include="MazeGameApp.h" />
     <ClInclude Include="MazeGrid.h" />
     <ClInclude Include="MazeGridLocation.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag" />

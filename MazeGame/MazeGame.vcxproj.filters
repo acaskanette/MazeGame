@@ -19,6 +19,19 @@
     <ClCompile Include="MazeGameApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FloorFace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FloorStart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FloorEnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -36,6 +49,19 @@
     <ClInclude Include="MazeGameApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FloorFace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FloorStart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FloorEnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag">

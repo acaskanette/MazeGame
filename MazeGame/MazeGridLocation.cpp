@@ -1,5 +1,7 @@
 #include "MazeGridLocation.h"
 #include "Cube.h"
+#include "DoorObject.h"
+#include "KeyObject.h"
 
 MazeGridLocation::MazeGridLocation(MazeObjectType _objectType) {
 	SetObjectType(_objectType);
@@ -33,13 +35,17 @@ void MazeGridLocation::SetObjectType(MazeObjectType _objectType) {
 void MazeGridLocation::SetDefaultGameMesh() {
 	switch (objectType) {
 	case MAZE_WALL:
-	case MAZE_FLOOR:
-	case MAZE_OBJECT1:
-	case MAZE_OBJECT2:
+	case MAZE_FLOOR:		
 		gameObject = new Cube("models/crate/crate.obj");
 		break;
 	case MAZE_START:
 		gameObject = new Cube("models/crateStart/crate.obj");
+		break;
+	case MAZE_OBJECT1:
+		gameObject = new DoorObject("models/door/door.obj", 0.32f);
+		break;
+	case MAZE_OBJECT2:
+		gameObject = new KeyObject("models/door/door.obj", 0.06f);
 		break;
 	case MAZE_END:
 		gameObject = new Cube("models/crateFinish/crate.obj");

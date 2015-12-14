@@ -42,12 +42,25 @@ void Player::UpdateMe(GameTime& gameTime) {
 
 void Player::Move(glm::vec3 direction) {
 	int moveIndex = GetGridIndexFromDirection(direction);
-	if (moveIndex == -1 || mazeGrid->GridByIndex(moveIndex)->objectType == MazeObjectType::MAZE_WALL) {
+	if (moveIndex == -1 || mazeGrid->GridByIndex(moveIndex)->objectType == MazeObjectType::MAZE_WALL || mazeGrid->GridByIndex(moveIndex)->objectType == MazeObjectType::MAZE_OBJECT1) {
 		printf("Can't move there!");
 		return;
 	}
 
 	currentGridIndex = moveIndex;
+
+	//Unlock door
+	if (mazeGrid->GridByIndex(currentGridIndex)->objectType == MazeObjectType::MAZE_OBJECT2)
+		mazeGrid->UnlockDoor();
+
+	// Winner!
+	if (mazeGrid->GridByIndex(currentGridIndex)->objectType == MazeObjectType::MAZE_END) {
+		light->SetSpecular(glm::vec3(0.5f, 0.5f, 0.5f));
+		light->SetAmbient(glm::vec3(0.05f, 0.05f, 0.05f));
+		light->SetDiffuse(glm::vec3(0.1f, 0.1f, 0.1f));
+	}
+
+
 	m_position += direction * 2.0f;
 }
 

@@ -1,22 +1,24 @@
 #include "MazeGrid.h"
+#include "DoorObject.h"
 
 int grid[GRIDSIZE*GRIDSIZE] = {		// 0 = empty, 1 = wall, 2 = start, 3 = end, 4 = object1, 5 = object2
 	1,1,1,1,1,1,1,1,1,1,1,
 	1,1,3,1,1,1,1,1,1,1,1,
-	1,1,0,0,0,0,0,0,5,1,1,
-	1,1,1,1,1,1,1,0,1,1,1,
-	1,1,0,0,0,1,1,0,0,1,1,
+	1,1,0,0,0,0,0,0,0,1,1,
+	1,1,1,1,1,1,1,4,1,0,1,
+	1,1,0,0,0,1,1,0,0,0,1,
 	1,1,0,1,0,0,0,0,0,1,1,
 	1,1,0,1,0,1,1,1,0,1,1,
-	1,1,0,1,0,1,0,1,0,1,1,
-	1,1,0,1,4,1,0,0,0,1,1,
-	1,2,0,1,1,1,1,1,1,1,1,
+	1,1,0,1,0,1,5,1,0,1,1,
+	1,1,0,1,0,1,0,0,0,0,1,
+	1,2,0,1,0,1,1,0,1,0,1,
 	1,1,1,1,1,1,1,1,1,1,1
 };
 
 MazeGrid::MazeGrid(SceneGraph* scene) {
 	startIndex = -1;
 	finishIndex = -1;
+	doorIndex = -1;
 
 	// Create the root object and add it to the scene
 	rootObject = new GameObject();
@@ -39,6 +41,10 @@ MazeGrid::MazeGrid(SceneGraph* scene) {
 			startIndex = i;
 		if ((MazeObjectType)grid[i] == MazeObjectType::MAZE_END)
 			finishIndex = i;
+		if ((MazeObjectType)grid[i] == MazeObjectType::MAZE_OBJECT1)
+			doorIndex = i;
+
+
 	}
 }
 
@@ -54,4 +60,10 @@ MazeGrid::~MazeGrid() {
 
 MazeGridLocation* MazeGrid::GridByIndex(int _index) {
 	return mazeGrid[_index];
+}
+
+void MazeGrid::UnlockDoor() {
+	mazeGrid[doorIndex]->objectType = MazeObjectType::MAZE_FLOOR;
+	GameObject* doorObjectChild = ((DoorObject*)mazeGrid[doorIndex]->GetGameObject())->_doorObjectChild;
+	mazeGrid[doorIndex]->GetGameObject()->RemoveChild(doorObjectChild);
 }

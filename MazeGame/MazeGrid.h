@@ -11,9 +11,11 @@ private:
 
 public:
 	MazeGridLocation* GridByIndex(int _index);
+	void UnlockDoor();
 
 	int startIndex;
 	int finishIndex;
+	int doorIndex;
 	MazeGrid(SceneGraph* m_scene);
 	~MazeGrid();	
 };

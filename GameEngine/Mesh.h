@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
 #include "Vertex.h"
-#include "GLTexture.h"
+#include "Texture.h"
 
-struct Mesh {
+class Mesh {
+public:
+	GLuint vao, vbo, ebo;
 	std::vector<Vertex> vertices;
-	GLuint vao, vbo;
-	GLTexture texture;
+	std::vector<GLuint> indices;
+	std::vector<Texture> textures;
 
-	Mesh() : vao(0), vbo(0), texture() {}
-	~Mesh() {}
+	Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures);
 };

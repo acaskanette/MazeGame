@@ -1,7 +1,6 @@
 #include "MazeGrid.h"
 
 int grid[GRIDSIZE*GRIDSIZE] = {		// 0 = empty, 1 = wall, 2 = start, 3 = end, 4 = object1, 5 = object2
-
 	1,3,1,1,1,1,1,1,1,
 	1,0,0,0,0,0,0,5,1,
 	1,1,1,1,1,1,0,1,1,
@@ -11,32 +10,46 @@ int grid[GRIDSIZE*GRIDSIZE] = {		// 0 = empty, 1 = wall, 2 = start, 3 = end, 4 =
 	1,0,1,0,1,0,1,0,1,
 	1,0,1,4,1,0,0,0,1,
 	2,0,1,1,1,1,1,1,1
-
 };
 
-MazeGrid::MazeGrid(AbstractRenderer* _renderer) {
-
+MazeGrid::MazeGrid(SceneGraph* scene) {
 	startIndex = -1;
 	finishIndex = -1;
 
+	// Create the root object and add it to the scene
 	rootObject = new GameObject();
+	rootObject->SetLocalPosition(glm::vec3(-GRIDSIZE, 0.0f, -GRIDSIZE));
+	scene->Add(rootObject);
 
+	// Generate the maze grid based on the grid array
 	for (int i = 0; i < GRIDSIZE*GRIDSIZE; i++) {
-		mazeGrid[i] = new MazeGridLocation((MazeObjectType)grid[i], _renderer);
+		mazeGrid[i] = new MazeGridLocation((MazeObjectType)grid[i]);
+
+		// Add the game object of this grid location to the scene graph (as children of root object) if it exists,
+		// and set their positions correctly
+		if (mazeGrid[i]->GetGameObject()) {
+			rootObject->AddChild(mazeGrid[i]->GetGameObject());
+			mazeGrid[i]->GetGameObject()->SetLocalPosition(glm::vec3((i % GRIDSIZE) * 2.0f, 0.0f, (i / GRIDSIZE) * 2.0f));
+		}
+
+		// Set the start or ending index of the grid
 		if ((MazeObjectType)grid[i] == MazeObjectType::MAZE_START)
 			startIndex = i;
 		if ((MazeObjectType)grid[i] == MazeObjectType::MAZE_END)
 			finishIndex = i;
 	}
-
 }
 
 MazeGrid::~MazeGrid() {
-
+	// No need to delete the root object as the scene node will handle it
+	// Delete the maze grid location objects
+	for (int i = 0; i < GRIDSIZE*GRIDSIZE; i++)
+		if (mazeGrid[i]) {
+			delete mazeGrid[i];
+			mazeGrid[i] = nullptr;
+		}
 }
 
-
 MazeGridLocation* MazeGrid::GridByIndex(int _index) {
-
 	return mazeGrid[_index];
 }

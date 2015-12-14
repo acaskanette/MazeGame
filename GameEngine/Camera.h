@@ -1,21 +1,20 @@
 #pragma once
 #include "AbstractRenderer.h"
-#include <GL/glew.h>
-#include <GLM/glm.hpp>
+#include "GameObject.h"
 
 // Handles everything to do with the Camera, including its position, where it's looking, its view frustum, and manual culling
-class Camera {
+class Camera : public GameObject {
 public:
 	bool IsInView(const glm::vec3& position, float radius);
 	void ResizeWindow(GLfloat newWidth, GLfloat newHeight);
 
-	void UpdateFrustum(AbstractRenderer* renderer);
+	virtual void UpdateMe(GameTime& gameTime) override;
 
-	void SetPosition(const glm::vec3& position);
+	virtual void SetLocalPosition(const glm::vec3& position) override;
 	void SetUp(const glm::vec3& up);
 	void SetLookAt(const glm::vec3& lookAt);
+	void ForceUpdate();
 
-	const glm::vec3& GetPosition();
 	const glm::vec3& GetUp();
 	const glm::vec3& GetForward();
 	const glm::vec3& GetSceneCentre();
@@ -24,9 +23,9 @@ public:
 	const GLfloat& GetWindowWidth();
 	const GLfloat& GetWindowHeight();
 
-	Camera(GLfloat width, GLfloat height);
+	Camera(AbstractRenderer* renderer, GLfloat width, GLfloat height);
 private:
-	glm::vec3 m_position;
+	AbstractRenderer* m_renderer;
 	glm::vec3 m_sceneCentre;
 	glm::vec3 m_up;
 	glm::vec3 m_forward;

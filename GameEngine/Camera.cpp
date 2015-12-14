@@ -1,7 +1,8 @@
 #include "Camera.h"
 #include <GLM/gtc/matrix_transform.hpp>
 
-Camera::Camera(GLfloat width, GLfloat height) {
+Camera::Camera(AbstractRenderer* renderer, GLfloat width, GLfloat height) {
+	m_renderer = renderer;
 	m_position = glm::vec3(0.0F, 0.0F, 15.0F);
 	m_sceneCentre = glm::vec3(0.0F, 0.0F, 0.0F);
 	m_up = glm::vec3(0.0F, 1.0F, 0.0F);
@@ -11,26 +12,22 @@ Camera::Camera(GLfloat width, GLfloat height) {
 	m_needsUpdate = true;
 }
 
-void Camera::ResizeWindow(GLfloat newWidth, GLfloat newHeight) {
-	m_windowWidth = newWidth;
-	m_windowHeight = newHeight;
-	m_needsUpdate = true;
-}
-
-void Camera::UpdateFrustum(AbstractRenderer* renderer) {
+void Camera::UpdateMe(GameTime& gameTime) {
 	if (m_needsUpdate) {
 		m_forward = m_sceneCentre - m_position;
 		m_viewMatrix = glm::lookAt(m_position, m_sceneCentre, m_up);
 		m_projectionMatrix = glm::perspective(45.0f, m_windowWidth / m_windowHeight, 0.1f, 200.0f); // angle, aspect ratio, near, far
 		
-		renderer->UpdateFrustum(m_viewMatrix, m_projectionMatrix);
+		glUniform3f(m_renderer->GetShader()->GetUniformLocation("cameraPosition"), GetLocalPosition().x, GetLocalPosition().y, GetLocalPosition().z);
+		glUniformMatrix4fv(m_renderer->GetShader()->GetUniformLocation("cameraViewMatrix"), 1, GL_FALSE, &m_viewMatrix[0][0]);
+		glUniformMatrix4fv(m_renderer->GetShader()->GetUniformLocation("projectionMatrix"), 1, GL_FALSE, &m_projectionMatrix[0][0]);
 
 		m_needsUpdate = false;
 	}
 }
 
-void Camera::SetPosition(const glm::vec3& position) {
-	m_position = position;
+void Camera::SetLocalPosition(const glm::vec3& position) {
+	GameObject::SetLocalPosition(position);
 	m_needsUpdate = true;
 }
 
@@ -44,8 +41,8 @@ void Camera::SetLookAt(const glm::vec3& lookAt) {
 	m_needsUpdate = true;
 }
 
-const glm::vec3& Camera::GetPosition() {
-	return m_position;
+void Camera::ForceUpdate() {
+	m_needsUpdate = true;
 }
 
 const glm::vec3& Camera::GetUp() {
@@ -74,6 +71,12 @@ const GLfloat& Camera::GetWindowWidth() {
 
 const GLfloat& Camera::GetWindowHeight() {
 	return m_windowHeight;
+}
+
+void Camera::ResizeWindow(GLfloat newWidth, GLfloat newHeight) {
+	m_windowWidth = newWidth;
+	m_windowHeight = newHeight;
+	m_needsUpdate = true;
 }
 
 bool Camera::IsInView(const glm::vec3& position, float radius) {

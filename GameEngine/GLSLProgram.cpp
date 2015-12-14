@@ -16,12 +16,12 @@ void GLSLProgram::CompileShaders(const std::string& _vertexShaderFilePath, const
   // Create the vertex shader object, and store its ID
   vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
   if (vertexShaderID == 0)
-		LogManager::getInstance().logFatal("Vertex shader failed to be created!");
+		LogManager::GetInstance()->LogFatal("Vertex shader failed to be created!");
 
   // Create the fragment shader object, and store its ID
   fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
   if (fragmentShaderID == 0)
-		LogManager::getInstance().logFatal("Fragment shader failed to be created!");
+		LogManager::GetInstance()->LogFatal("Fragment shader failed to be created!");
 
   CompileShader(_vertexShaderFilePath, vertexShaderID);
   CompileShader(_fragmentShaderFilepath, fragmentShaderID);
@@ -49,7 +49,7 @@ void GLSLProgram::LinkShaders() {
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
 
-		LogManager::getInstance().logFatal("Shaders failed to link!");
+		LogManager::GetInstance()->LogFatal("Shaders failed to link!");
   }
 
   // Always detach shaders after a successful link.
@@ -67,7 +67,7 @@ GLint GLSLProgram::GetUniformLocation(const std::string& _uniformName) {
   GLint location = glGetUniformLocation(programID, _uniformName.c_str());
 
   if (location == GL_INVALID_INDEX)
-		LogManager::getInstance().logFatal("Uniform " + _uniformName + " not found in shader!");
+		LogManager::GetInstance()->LogFatal("Uniform " + _uniformName + " not found in shader!");
 
   return location;
 }
@@ -91,7 +91,7 @@ void GLSLProgram::CompileShader(const std::string& _filePath, GLuint _id) {
   // Open the file
   std::ifstream shaderFile(_filePath);
   if (shaderFile.fail())
-		LogManager::getInstance().logFatal("Failed to open " + _filePath);
+		LogManager::GetInstance()->LogFatal("Failed to open " + _filePath);
 
   // File contents stores all the text in the file
   std::string fileContents = "";
@@ -123,6 +123,6 @@ void GLSLProgram::CompileShader(const std::string& _filePath, GLuint _id) {
 
     glDeleteShader(_id);
 
-		LogManager::getInstance().logFatal("Shader " + _filePath + " failed to compile");
+		LogManager::GetInstance()->LogFatal("Shader " + _filePath + " failed to compile: " + errorLog.data());
   }
 }

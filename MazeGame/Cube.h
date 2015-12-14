@@ -1,11 +1,19 @@
 #pragma once
 #include <GameObject.h>
-#include <Mesh.h>
+#include <ResourceManager.h>
+#include <Model.h>
 
 class Cube : public GameObject {
 public:
-	void UpdateMe() override;
-	void RenderMe(AbstractRenderer* renderer) override;
+	virtual void RenderMe(AbstractRenderer* renderer) override {
+		for (int i = 0; i < _model->meshes.size(); i++)
+			renderer->RenderMesh(&_model->meshes[i]);
+	}
 
-	Cube(AbstractRenderer* renderer);
+	Cube() {
+		_model = ResourceManager::GetInstance()->LoadModel("models/crate/crate.obj");
+		SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
+	}
+private:
+	Model* _model;
 };

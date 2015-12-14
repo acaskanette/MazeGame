@@ -3,6 +3,6 @@
 
 class MazeGameApp : public GameEngine {
 	virtual void Initialize() override;
-	virtual void Update() override;
+	virtual void Update(GameTime&) override;
 	virtual void Render() override;
 };

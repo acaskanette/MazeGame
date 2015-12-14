@@ -2,88 +2,87 @@
 
 #include <GLM/gtc/matrix_transform.hpp>
 
-GameObject::GameObject() : _parent(nullptr), _firstChild(nullptr), _lastChild(nullptr), _prevSibling(nullptr), _nextSibling(nullptr), _model(nullptr) {
-	_position = glm::vec3(0.0F, 0.0F, 0.0F);
-	_axis = glm::vec3(0.0F, 1.0F, 0.0F);
-	_angle = 0;
-	_scale = glm::vec3(1.0F, 1.0F, 1.0F);
+GameObject::GameObject() : m_parent(nullptr), m_firstChild(nullptr), m_lastChild(nullptr), m_prevSibling(nullptr), m_nextSibling(nullptr) {
+	m_position = glm::vec3(0.0F, 0.0F, 0.0F);
+	m_axis = glm::vec3(0.0F, 1.0F, 0.0F);
+	m_angle = 0;
+	m_scale = glm::vec3(1.0F, 1.0F, 1.0F);
 }
 
 GameObject::~GameObject() {
-	if (_model)
-		delete _model;
-	if (_nextSibling)
-		delete _nextSibling;
-	if (_firstChild)
-		delete _firstChild;
+	if (m_nextSibling)
+		delete m_nextSibling;
+	if (m_firstChild)
+		delete m_firstChild;
 }
 
-void GameObject::Update() {
+void GameObject::Update(GameTime& gameTime) {
 	// If not the root node
-	if (_parent) {
-		UpdateMe(); // Update self
+	if (m_parent) {
+		UpdateMe(gameTime); // Update self
 
 		// Breadth first
 		// Then update siblings
-		if (_nextSibling)
-			_nextSibling->Update();
+		if (m_nextSibling)
+			m_nextSibling->Update(gameTime);
 	}
 
 	// Then update children
-	if (_firstChild)
-		_firstChild->Update();
+	if (m_firstChild)
+		m_firstChild->Update(gameTime);
 }
 
 void GameObject::Render(AbstractRenderer* renderer) {
 	// If not the root node
-	if (_parent) {
+	if (m_parent) {
+		glUniformMatrix4fv(renderer->GetShader()->GetUniformLocation("transformMatrix"), 1, GL_FALSE, &GetTransform()[0][0]);
 		RenderMe(renderer); // Render self
 
 		// Then render siblings
-		if (_nextSibling)
-			_nextSibling->Render(renderer);
+		if (m_nextSibling)
+			m_nextSibling->Render(renderer);
 	}
 
 	// Then render children
-	if (_firstChild)
-		_firstChild->Render(renderer);
+	if (m_firstChild)
+		m_firstChild->Render(renderer);
 }
 
 void GameObject::AddChild(GameObject* object) {
 	// If there isn't a last child there isn't a first child
-	if (!_lastChild)
-		_firstChild = object;
+	if (!m_lastChild)
+		m_firstChild = object;
 	else {
 		// Set the last child's next sibling as the added object (making it the last child)
-		_lastChild->_nextSibling = object;
+		m_lastChild->m_nextSibling = object;
 		// Set the object's previous sibling as the old last child
-		object->_prevSibling = _lastChild;
+		object->m_prevSibling = m_lastChild;
 	}
 
 	// Set the object to be the last child and add a pointer to the parent
-	_lastChild = object;
-	object->_parent = this;
+	m_lastChild = object;
+	object->m_parent = this;
 }
 
 void GameObject::RemoveChild(GameObject* object) {
 	GameObject* currentNode = nullptr;
 
 	// Loop through the children until the object to be removed is found
-	for (currentNode = _firstChild; currentNode != nullptr; currentNode = currentNode->_nextSibling) {
+	for (currentNode = m_firstChild; currentNode != nullptr; currentNode = currentNode->m_nextSibling) {
 		if (currentNode == object) {
 			// If the object has a previous sibling, set its next sibling as the removed objects next sibling
-			if (object->_prevSibling)
-				object->_prevSibling->_nextSibling = object->_nextSibling;
+			if (object->m_prevSibling)
+				object->m_prevSibling->m_nextSibling = object->m_nextSibling;
 			else // Otherwise just set the first child as the object's next sibling
-				_firstChild = object->_nextSibling;
+				m_firstChild = object->m_nextSibling;
 
 			// If the object has a next sibling, set its previous sibling as the object's previous sibling
-			if (object->_nextSibling)
-				object->_nextSibling->_prevSibling = object->_prevSibling;
+			if (object->m_nextSibling)
+				object->m_nextSibling->m_prevSibling = object->m_prevSibling;
 			else // Otherwise just set the last child as the object's previous sibling
-				_lastChild = object->_prevSibling;
+				m_lastChild = object->m_prevSibling;
 
-			object->_parent = nullptr; // Remove the pointer to the parent
+			object->m_parent = nullptr; // Remove the pointer to the parent
 			break;
 		}
 	}
@@ -91,21 +90,21 @@ void GameObject::RemoveChild(GameObject* object) {
 
 const glm::mat4 GameObject::GetTransform() {
 	glm::mat4 transform;
-	if (_parent) // Get the parent's transforms
-		transform = _parent->GetTransform();
+	if (m_parent) // Get the parent's transforms
+		transform = m_parent->GetTransform();
 	else         // Root node would have this
 		transform = glm::mat4(1.0F);
 
 	// Apply scale, rotation, and translation to the parent transform and return it
-	transform = glm::scale(transform, GetScale());
-	transform = glm::translate(transform, GetLocalPosition());
 	transform = glm::rotate(transform, GetRotationAngle(), GetRotationAxis());
+	transform = glm::translate(transform, GetLocalPosition());
+	transform = glm::scale(transform, GetScale());
 
 	return transform;
 }
 
 const glm::vec3& GameObject::GetLocalPosition() { 
-	return _position; 
+	return m_position; 
 }
 
 const glm::vec3 GameObject::GetWorldPosition() {
@@ -116,37 +115,33 @@ const glm::vec3 GameObject::GetWorldPosition() {
 }
 
 const glm::vec3& GameObject::GetRotationAxis() { 
-	return _axis; 
+	return m_axis; 
 }
 
 const GLfloat& GameObject::GetRotationAngle() { 
-	return _angle; 
+	return m_angle; 
 }
 
 const glm::vec3& GameObject::GetScale() { 
-	return _scale; 
-}
-
-const Mesh& GameObject::GetModel() { 
-	return *_model; 
+	return m_scale; 
 }
 
 GameObject* GameObject::GetParent() {
-	return _parent;
+	return m_parent;
 }
 
 void GameObject::SetLocalPosition(const glm::vec3& position) { 
-	_position = position; 
+	m_position = position; 
 }
 
 void GameObject::SetRotationAxis(const glm::vec3& axis) { 
-	_axis = axis; 
+	m_axis = axis; 
 }
 
 void GameObject::SetRotationAngle(const GLfloat& angle) { 
-	_angle = angle; 
+	m_angle = angle; 
 }
 
 void GameObject::SetScale(const glm::vec3& scale) { 
-	_scale = scale; 
+	m_scale = scale; 
 }

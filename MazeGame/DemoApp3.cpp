@@ -1,102 +1,62 @@
-#include "DemoApp3.h"
+/*#include "DemoApp3.h"
 
-#include "Cube.h"
+#include "Nanosuit.h"
+#include <PointLight.h>
 
-GLfloat cameraX = 0.0F, cameraY = 0.0F, cameraZ = 15.0F;
+GLfloat cameraX = 0.0F, cameraY = 0.0F, cameraZ = 5.0F;
 GLfloat lookX = 0.0F, lookY = 0.0F, lookZ = 0.0F;
 
-GLfloat parentAngle = 0.0F, child1Angle = 0.0F, child2Angle = 0.0F;
+GLfloat lightRot = 0.0F;
 
-Cube* pikachuParent, *pikachuChild1, *pikachuChild2;
+Nanosuit* suit;
+GameObject* lightParent; // to rotate it around a point easily
+PointLight* light1;
 
 void DemoApp3::Initialize() {
 	GameEngine::Initialize();
 
-	pikachuParent = new Cube(m_renderer);
-	pikachuChild1 = new Cube(m_renderer);
-	pikachuChild2 = new Cube(m_renderer);
+	suit = new Nanosuit(m_resources);
+	suit->SetLocalPosition(glm::vec3(0.0F, -1.75F, 0.0F));
+	//suit->SetScale(glm::vec3(0.2F, 0.2F, 0.2F));
 
-	Add(pikachuParent); // Add a game object to the scene
-	Add(pikachuChild1, pikachuParent); // Add as a child of pikachuParent
-	Add(pikachuChild2, pikachuParent);
+	lightParent = new GameObject();
+	light1 = new PointLight();
+	light1->SetLocalPosition(glm::vec3(3.0f, 3.0f, 3.0f));
 
-	pikachuParent->SetLocalPosition(glm::vec3(0.0F, 1.0F, 0.0F));   // Positioned 0, 1, 0 in world space
-	pikachuChild1->SetLocalPosition(glm::vec3(-4.0F, -4.0F, 0.0F)); // Positioned -4, -2, 0 relative to the parent
-	pikachuChild2->SetLocalPosition(glm::vec3(4.0F, 4.0F, 0.0F));
-
-	pikachuParent->SetRotationAxis(glm::vec3(1, 0, 0));
+	Add(suit);
+	Add(lightParent);
+	Add(light1, lightParent);
 }
 
-void DemoApp3::Update() {
+void DemoApp3::Update(GameTime& gameTime) {
 	SDL_Event e;
 
-	const float CAM_SPEED = 10.0F * 0.0333F;
+	float CAM_SPEED = 25 * gameTime.deltaTime;
 
-	while (SDL_PollEvent(&e)) {
-		switch (e.type) {
-		case SDL_QUIT:
-			Exit();
-			break;
-			// Keydown events
-		case SDL_KEYDOWN:
-		{
-			SDL_Keycode key = e.key.keysym.sym;
-			// Move the camera and have it look the same direction always
-			if (key == SDLK_a) {
-				cameraX += CAM_SPEED;
-				lookX += CAM_SPEED; // left
-			}
-			if (key == SDLK_d) {
-				cameraX -= CAM_SPEED;
-				lookX -= CAM_SPEED; // right
-			}
-			if (key == SDLK_w) {
-				cameraY += CAM_SPEED;
-				lookY += CAM_SPEED; // up
-			}
-			if (key == SDLK_s) {
-				cameraY -= CAM_SPEED;
-				lookY -= CAM_SPEED; // down
-			}
-			break;
-		}
-		// Window events
-		case SDL_WINDOWEVENT:
-		{
-			SDL_WindowEvent win = e.window;
-			if (win.event == SDL_WINDOWEVENT_RESIZED)
-				ResizeWindow(win.data1, win.data2);
-			break;
-		}
-		}
+	if (m_input->KeyDown(SDLK_a)) { // left
+		cameraX -= CAM_SPEED;
+		lookX -= CAM_SPEED;
+	} else if (m_input->KeyDown(SDLK_d)) { // right
+		cameraX += CAM_SPEED;
+		lookX += CAM_SPEED;
+	} else if (m_input->KeyDown(SDLK_w)) { // up
+		cameraY += CAM_SPEED;
+		lookY += CAM_SPEED;
+	} else if (m_input->KeyDown(SDLK_s)) { // down
+		cameraY -= CAM_SPEED;
+		lookY -= CAM_SPEED;
 	}
 
-	parentAngle += 25 * 0.0333F;
-	child1Angle += 50 * 0.0333F;
-	child2Angle -= 50 * 0.0333F;
+	lightRot += 25 * gameTime.deltaTime;
 
-	pikachuParent->SetRotationAngle(parentAngle);
-	pikachuChild1->SetRotationAngle(child1Angle);
-	pikachuChild2->SetRotationAngle(child2Angle);
+	lightParent->SetRotationAngle(lightRot);
 
-	m_camera->SetPosition(glm::vec3(cameraX, cameraY, cameraZ));
-	m_camera->SetLookAt(glm::vec3(lookX, lookY, lookZ));
+	m_mainCamera->SetLocalPosition(glm::vec3(cameraX, cameraY, cameraZ));
+	m_mainCamera->SetLookAt(glm::vec3(lookX, lookY, lookZ));
 
-	// TODO: Move this
-	m_camera->UpdateFrustum(m_renderer);
-
-	// Testing frustum culling
-	glm::vec3 parentPos = pikachuParent->GetWorldPosition(), leftPos = pikachuChild1->GetWorldPosition(), rightPos = pikachuChild2->GetWorldPosition();
-	bool parentInView = m_camera->IsInView(parentPos, 1.0F); // arbitrary radius for the cube
-	bool leftInView = m_camera->IsInView(leftPos, 1.0F);
-	bool rightInView = m_camera->IsInView(rightPos, 1.0F);
-	printf("PARENT POSITION X:%f Y:%f Z:%f | In view? %s\n", parentPos.x, parentPos.y, parentPos.z, parentInView ? "YES" : "NO");
-	printf("LEFT CHILD POSITION X:%f Y:%f Z:%f | In view? %s\n", leftPos.x, leftPos.y, leftPos.z, leftInView ? "YES" : "NO");
-	printf("RIGHT CHILD POSITION X:%f Y:%f Z:%f | In view? %s\n", rightPos.x, rightPos.y, rightPos.z, rightInView ? "YES" : "NO");
-
-	m_scene->Update();
+	m_scene->Update(gameTime);
 }
 
 void DemoApp3::Render() {
 	m_scene->Render(m_renderer);
-}
+}*/

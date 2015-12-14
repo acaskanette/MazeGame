@@ -1,16 +1,14 @@
 #include "SceneGraph.h"
 
-SceneGraph::SceneGraph() : m_rootNode(new GameObject()), m_mainCamera(nullptr) {}
+SceneGraph::SceneGraph() : m_rootNode(new GameObject()) {}
 
 SceneGraph::~SceneGraph() {
 	if (m_rootNode)
 		delete m_rootNode;
-	if (m_mainCamera)
-		delete m_mainCamera;
 }
 
-void SceneGraph::Update() {
-	m_rootNode->Update();
+void SceneGraph::Update(GameTime& gameTime) {
+	m_rootNode->Update(gameTime);
 }
 
 void SceneGraph::Render(AbstractRenderer* renderer) {
@@ -23,12 +21,4 @@ void SceneGraph::Add(GameObject* object) {
 
 void SceneGraph::Remove(GameObject* object) {
 	m_rootNode->RemoveChild(object);
-}
-
-void SceneGraph::SetMainCamera(Camera* cam) {
-	m_mainCamera = cam;
-}
-
-Camera& SceneGraph::GetMainCamera() {
-	return *m_mainCamera;
 }

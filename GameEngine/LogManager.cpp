@@ -1,10 +1,24 @@
 #include "LogManager.h"
-
 #include <SDL/SDL.h>
 #include <ctime>
 #include <sstream>
 
-LogManager* LogManager::theInstance = nullptr;
+LogManager* LogManager::instance = nullptr;
+
+LogManager* LogManager::GetInstance() {
+	if (instance == nullptr)
+		instance = new LogManager();
+
+	return instance;
+}
+
+void LogManager::DestroyLogManager(LogManager*& logManagerPointer) {
+	if (instance) {
+		delete instance;
+		instance = nullptr;
+		logManagerPointer = nullptr;
+	}
+}
 
 LogManager::LogManager() {
 	out = nullptr;
@@ -14,23 +28,16 @@ LogManager::LogManager() {
 }
 
 LogManager::~LogManager() {
-	close();
+	Close();
 }
 
-LogManager& LogManager::getInstance() {
-	if (theInstance == nullptr)
-		theInstance = new LogManager();
-
-	return *theInstance;
-}
-
-void LogManager::open(std::string& _fileName) {
-	close();
+void LogManager::Open(std::string& _fileName) {
+	Close();
 	out = new std::ofstream(_fileName.c_str());
 	severity = LogLevel::ERROR;
 }
 
-void LogManager::close() {
+void LogManager::Close() {
 	if (out) {
 		out->close();
 		delete out;
@@ -38,12 +45,12 @@ void LogManager::close() {
 	}
 }
 
-void LogManager::log(LogLevel _severity, std::string _msg, bool _consolePrinting) {
+void LogManager::Log(LogLevel _severity, std::string _msg, bool _consolePrinting) {
 	if (ignoreLowSeverity && (_severity < severity))
 		return;
 
 	if (!out)
-		open(logName);
+		Open(logName);
 
 	time_t t = time(0); // Get time
 	struct tm now;
@@ -59,41 +66,41 @@ void LogManager::log(LogLevel _severity, std::string _msg, bool _consolePrinting
 		printf(ss.str().c_str());
 }
 
-void LogManager::setSeverity(LogLevel _severity) {
+void LogManager::SetSeverity(LogLevel _severity) {
 	severity = _severity;
 }
 
-LogLevel LogManager::getSeverity() {
+LogLevel LogManager::GetSeverity() {
 	return severity;
 }
 
-void LogManager::setIgnoreSeverity(bool _ignore) {
+void LogManager::SetIgnoreSeverity(bool _ignore) {
 	ignoreLowSeverity = _ignore;
 }
 
-bool LogManager::isLowSeverityIgnored() {
+bool LogManager::IsLowSeverityIgnored() {
 	return ignoreLowSeverity;
 }
 
-void LogManager::logError(std::string _msg) {
-	log(LogLevel::ERROR, _msg);
+void LogManager::LogError(std::string _msg) {
+	Log(LogLevel::ERROR, _msg);
 }
 
-void LogManager::logWarning(std::string _msg) {
-	log(LogLevel::WARN, _msg);
+void LogManager::LogWarning(std::string _msg) {
+	Log(LogLevel::WARN, _msg);
 }
 
-void LogManager::logTrace(std::string _msg) {
-	log(LogLevel::TRACE, _msg);
+void LogManager::LogTrace(std::string _msg) {
+	Log(LogLevel::TRACE, _msg);
 }
 
-void LogManager::logInfo(std::string _msg) {
-	log(LogLevel::INFO, _msg);
+void LogManager::LogInfo(std::string _msg) {
+	Log(LogLevel::INFO, _msg);
 }
 
-void LogManager::logFatal(std::string _msg) {
-	log(LogLevel::FATAL, _msg);
-	log(LogLevel::FATAL, "Shutting down.");
+void LogManager::LogFatal(std::string _msg) {
+	Log(LogLevel::FATAL, _msg);
+	Log(LogLevel::FATAL, "Shutting down.");
 
 	SDL_Quit();
 	exit(1);

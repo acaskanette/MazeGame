@@ -1,28 +1,17 @@
 #include "MazeGridLocation.h"
+#include "Cube.h"
 
-MazeGridLocation::MazeGridLocation(MazeObjectType _objectType, AbstractRenderer* _renderer) {
-	
+MazeGridLocation::MazeGridLocation(MazeObjectType _objectType) {
 	SetObjectType(_objectType);
-	SetDefaultGameMesh(_renderer);	
-
+	SetDefaultGameMesh();	
 }
 
-MazeGridLocation::MazeGridLocation(MazeObjectType _objectType, GameObject* _gameMeshObject, AbstractRenderer* _renderer) {
-
+MazeGridLocation::MazeGridLocation(MazeObjectType _objectType, GameObject* _gameMeshObject) {
 	SetObjectType(_objectType);
-	SetGameMesh(_gameMeshObject);
-
-}
-
-
-MazeGridLocation::~MazeGridLocation() { 
-	
-	delete gameMesh; 
-
+	SetGameObject(_gameMeshObject);
 }
 
 void MazeGridLocation::SetObjectType(MazeObjectType _objectType) {
-
 	objectType = _objectType;
 
 	switch (objectType) {
@@ -38,18 +27,15 @@ void MazeGridLocation::SetObjectType(MazeObjectType _objectType) {
 		break;
 	default:
 		isPassable = false;
-
 	}
-
 }
 
-void MazeGridLocation::SetDefaultGameMesh(AbstractRenderer* _renderer) {
-
+void MazeGridLocation::SetDefaultGameMesh() {
 	switch (objectType) {
 	case MAZE_WALL:
-		gameMesh = new Wall(_renderer);
+		gameObject = new Cube();
 		break;
-	case MAZE_START:
+	/*case MAZE_START:
 		gameMesh = new FloorStart(_renderer);
 		break;
 	case MAZE_END:
@@ -66,25 +52,14 @@ void MazeGridLocation::SetDefaultGameMesh(AbstractRenderer* _renderer) {
 		break;
 	default:
 		gameMesh = new FloorFace(_renderer);
-		break;
+		break;*/
 	}
-
-	
-
 }
 
-void MazeGridLocation::SetGameMesh(GameObject* _gameMeshObject) {
-
-	gameMesh = _gameMeshObject;
-
+void MazeGridLocation::SetGameObject(GameObject* _gameMeshObject) {
+	gameObject = _gameMeshObject;
 }
 
-GameObject* MazeGridLocation::GameMesh() {
-
-	return gameMesh;
-
-}
-
-void MazeGridLocation::Render(AbstractRenderer* _renderer) {
-//	gameMesh->Render(_renderer);
+GameObject* MazeGridLocation::GetGameObject() {
+	return gameObject;
 }

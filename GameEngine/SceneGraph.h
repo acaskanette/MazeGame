@@ -4,18 +4,14 @@
 
 class SceneGraph {
 public:
-	void Update();
+	void Update(GameTime& gameTime);
 	void Render(AbstractRenderer* renderer);
 
 	void Add(GameObject* object);
 	void Remove(GameObject* object);
 
-	void SetMainCamera(Camera* cam);
-	Camera& GetMainCamera();
-
 	SceneGraph();
 	~SceneGraph();
 private:
 	GameObject* m_rootNode;
-	Camera* m_mainCamera;
 };

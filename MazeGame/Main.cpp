@@ -1,4 +1,4 @@
-#include "DemoApp3.h"
+//#include "DemoApp3.h"
 #include "MazeGameApp.h"
 
 int main(int argc, char* args[]) {

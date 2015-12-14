@@ -5,7 +5,9 @@
 #include <PointLight.h>
 
 glm::vec3 camPos(0.0f, 1.0f, 15.0f);
-glm::vec3 camLook(0.0f, 0.0f, 0.0f);
+glm::vec3 camFront(0.0f, 0.0f, -1.0f);
+glm::vec3 camUp(0.0f, 1.0f, 0.0f);
+GLfloat camRot = 0.0f;
 GLfloat camSpeed = 50.0f;
 
 MazeGrid* mazeGrid;
@@ -24,31 +26,29 @@ void MazeGameApp::Initialize() {
 
 void MazeGameApp::Update(GameTime& gameTime) {
 	if (m_input->KeyPress(SDLK_w)) { // forward
-		camPos.z -= camSpeed * gameTime.deltaTime;
-		camLook.z -= camSpeed * gameTime.deltaTime;
+		camPos += camFront * camSpeed * gameTime.deltaTime;
 	}
 	if (m_input->KeyPress(SDLK_s)) { // backward
-		camPos.z += camSpeed * gameTime.deltaTime;
-		camLook.z += camSpeed * gameTime.deltaTime;
+		camPos -= camFront * camSpeed * gameTime.deltaTime;
 	}
-	if (m_input->KeyPress(SDLK_a)) { // move left
-		camPos.x -= camSpeed * gameTime.deltaTime;
-		camLook.x -= camSpeed * gameTime.deltaTime;
+	/*if (m_input->KeyPress(SDLK_a)) { // move left
+		camPos -= glm::normalize(glm::cross(camFront, camUp)) * camSpeed * gameTime.deltaTime;
 	}
 	if (m_input->KeyPress(SDLK_d)) { // move right
-		camPos.x += camSpeed * gameTime.deltaTime;
-		camLook.x += camSpeed * gameTime.deltaTime;
+		camPos += glm::normalize(glm::cross(camFront, camUp)) * camSpeed * gameTime.deltaTime;
+	}*/
+	if (m_input->KeyDown(SDLK_q)) { // turn left
+		camRot += camSpeed * gameTime.deltaTime;
+		camFront = glm::rotate(glm::vec3(0, 0, -1), camRot, glm::vec3(0, 1, 0));
 	}
-	if (m_input->KeyPress(SDLK_q)) { // turn left
-		camLook = glm::rotate(camLook, -45.0f, glm::vec3(0, 1, 0));
-	}
-	if (m_input->KeyPress(SDLK_e)) { // turn right
-		camLook = glm::rotate(camLook, 45.0f, glm::vec3(0, 1, 0));
+	if (m_input->KeyDown(SDLK_e)) { // turn right
+		camRot -= camSpeed * gameTime.deltaTime;
+		camFront = glm::rotate(glm::vec3(0, 0, -1), camRot, glm::vec3(0, 1, 0));
 	}
 
 	m_mainCamera->SetLocalPosition(camPos);
-	m_mainCamera->SetLookAt(camLook);
-	light->SetLocalPosition(camPos);
+	m_mainCamera->SetLookAt(camFront);
+	light->SetLocalPosition(camPos + camFront);
 	m_scene->Update(gameTime);
 }
 

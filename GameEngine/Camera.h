@@ -17,7 +17,7 @@ public:
 
 	const glm::vec3& GetUp();
 	const glm::vec3& GetForward();
-	const glm::vec3& GetSceneCentre();
+	const glm::vec3& GetLookAt();
 	const glm::mat4& GetModelView();
 	const glm::mat4& GetProjection();
 	const GLfloat& GetWindowWidth();
@@ -26,7 +26,7 @@ public:
 	Camera(AbstractRenderer* renderer, GLfloat width, GLfloat height);
 private:
 	AbstractRenderer* m_renderer;
-	glm::vec3 m_sceneCentre;
+	glm::vec3 m_front;
 	glm::vec3 m_up;
 	glm::vec3 m_forward;
 	glm::mat4 m_viewMatrix;

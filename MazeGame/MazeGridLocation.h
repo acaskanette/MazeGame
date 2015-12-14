@@ -8,10 +8,10 @@ enum MazeObjectType {
 class MazeGridLocation {
 private:
 	bool isPassable;			// whether this object can be passed through / you can move onto it
-	MazeObjectType objectType;	// what type of object this is
 	GameObject* gameObject;		// The object that represents the grid location in the scene
 
 public:
+	MazeObjectType objectType;	// what type of object this is
 	MazeGridLocation(MazeObjectType _objectType);
 	MazeGridLocation(MazeObjectType _objectType, GameObject* gameMeshObject);
 	

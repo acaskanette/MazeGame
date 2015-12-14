@@ -96,8 +96,8 @@ const glm::mat4 GameObject::GetTransform() {
 		transform = glm::mat4(1.0F);
 
 	// Apply scale, rotation, and translation to the parent transform and return it
-	transform = glm::rotate(transform, GetRotationAngle(), GetRotationAxis());
 	transform = glm::translate(transform, GetLocalPosition());
+	transform = glm::rotate(transform, GetRotationAngle(), GetRotationAxis());
 	transform = glm::scale(transform, GetScale());
 
 	return transform;

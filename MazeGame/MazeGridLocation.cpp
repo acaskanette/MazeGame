@@ -33,26 +33,20 @@ void MazeGridLocation::SetObjectType(MazeObjectType _objectType) {
 void MazeGridLocation::SetDefaultGameMesh() {
 	switch (objectType) {
 	case MAZE_WALL:
-		gameObject = new Cube();
+	case MAZE_FLOOR:
+	case MAZE_OBJECT1:
+	case MAZE_OBJECT2:
+		gameObject = new Cube("models/crate/crate.obj");
 		break;
-	/*case MAZE_START:
-		gameMesh = new FloorStart(_renderer);
+	case MAZE_START:
+		gameObject = new Cube("models/crateStart/crate.obj");
 		break;
 	case MAZE_END:
-		gameMesh = new FloorEnd(_renderer);
+		gameObject = new Cube("models/crateFinish/crate.obj");
 		break;
-	case MAZE_FLOOR:
-		gameMesh = new FloorFace(_renderer);
-		break;
-	case MAZE_OBJECT1:
-		gameMesh = new Cube(_renderer);
-		break;
-	case MAZE_OBJECT2:
-		gameMesh = new Cube2(_renderer);
-		break;
+	
 	default:
-		gameMesh = new FloorFace(_renderer);
-		break;*/
+		break;
 	}
 }
 

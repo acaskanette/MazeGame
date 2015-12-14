@@ -1,15 +1,17 @@
 #include "MazeGrid.h"
 
 int grid[GRIDSIZE*GRIDSIZE] = {		// 0 = empty, 1 = wall, 2 = start, 3 = end, 4 = object1, 5 = object2
-	1,3,1,1,1,1,1,1,1,
-	1,0,0,0,0,0,0,5,1,
-	1,1,1,1,1,1,0,1,1,
-	1,0,0,0,1,1,0,0,1,
-	1,0,1,0,0,0,0,0,1,
-	1,0,1,0,1,1,1,0,1,
-	1,0,1,0,1,0,1,0,1,
-	1,0,1,4,1,0,0,0,1,
-	2,0,1,1,1,1,1,1,1
+	1,1,1,1,1,1,1,1,1,1,1,
+	1,1,3,1,1,1,1,1,1,1,1,
+	1,1,0,0,0,0,0,0,5,1,1,
+	1,1,1,1,1,1,1,0,1,1,1,
+	1,1,0,0,0,1,1,0,0,1,1,
+	1,1,0,1,0,0,0,0,0,1,1,
+	1,1,0,1,0,1,1,1,0,1,1,
+	1,1,0,1,0,1,0,1,0,1,1,
+	1,1,0,1,4,1,0,0,0,1,1,
+	1,2,0,1,1,1,1,1,1,1,1,
+	1,1,1,1,1,1,1,1,1,1,1
 };
 
 MazeGrid::MazeGrid(SceneGraph* scene) {
@@ -29,7 +31,7 @@ MazeGrid::MazeGrid(SceneGraph* scene) {
 		// and set their positions correctly
 		if (mazeGrid[i]->GetGameObject()) {
 			rootObject->AddChild(mazeGrid[i]->GetGameObject());
-			mazeGrid[i]->GetGameObject()->SetLocalPosition(glm::vec3((i % GRIDSIZE) * 2.0f, 0.0f, (i / GRIDSIZE) * 2.0f));
+			mazeGrid[i]->GetGameObject()->SetLocalPosition(glm::vec3((i % GRIDSIZE) * 2.0f, (MazeObjectType)grid[i] == MazeObjectType::MAZE_WALL ? 0.0f : -2.0f, (i / GRIDSIZE) * 2.0f));
 		}
 
 		// Set the start or ending index of the grid

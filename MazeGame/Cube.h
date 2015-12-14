@@ -10,8 +10,8 @@ public:
 			renderer->RenderMesh(&_model->meshes[i]);
 	}
 
-	Cube() {
-		_model = ResourceManager::GetInstance()->LoadModel("models/crate/crate.obj");
+	Cube(std::string modelName) {
+		_model = ResourceManager::GetInstance()->LoadModel(modelName);
 		SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
 	}
 private:

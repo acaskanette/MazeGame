@@ -10,6 +10,9 @@ Player::Player(Camera* mainCamera, MazeGrid* theGrid) : turnSpeed(50.0f), curren
 
 	light = new PointLight();
 	AddChild(light);
+	light->SetSpecular(glm::vec3(0.5f, 0.5f, 0.5f));
+	light->SetAmbient(glm::vec3(0.1f, 0.05f, 0.05f));
+	light->SetDiffuse(glm::vec3(0.25f, 0.1f, 0.1f));
 
 	SetLocalPosition(glm::vec3(-9.0f, 1.0f, 0.825f));
 	camera->SetLocalPosition(GetLocalPosition());

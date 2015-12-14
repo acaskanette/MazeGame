@@ -1,13 +1,30 @@
-﻿Build started 2015-12-14 15:48:10.
+﻿Build started 2015-12-14 16:04:34.
      1>Project "C:\GameDev\Graphics\MazeGame\GameEngine\GameEngine.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp GameEngine.cpp SceneGraph.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp Clock.cpp GameObject.cpp GameEngine.cpp GLSLProgram.cpp InputManager.cpp Loader.cpp LogManager.cpp Mesh.cpp Model.cpp OpenGLRenderer.cpp picoPNG.cpp PointLight.cpp ResourceManager.cpp SceneGraph.cpp Timer.cpp
+         Timer.cpp
+     1>c:\gamedev\graphics\mazegame\gameengine\timer.cpp(29): warning C4244: '+=' : conversion from 'double' to 'LONGLONG', possible loss of data
+         SceneGraph.cpp
+         ResourceManager.cpp
+         PointLight.cpp
+         picoPNG.cpp
+         OpenGLRenderer.cpp
+     1>c:\gamedev\graphics\mazegame\gameengine\openglrenderer.cpp(54): warning C4244: 'argument' : conversion from 'GLuint' to 'GLfloat', possible loss of data
+         Model.cpp
+         Mesh.cpp
+         LogManager.cpp
+         Loader.cpp
+         InputManager.cpp
+         GLSLProgram.cpp
+         GameEngine.cpp
+     1>c:\gamedev\graphics\mazegame\gameengine\gameengine.cpp(32): warning C4244: 'argument' : conversion from 'Sint32' to 'GLfloat', possible loss of data
+     1>c:\gamedev\graphics\mazegame\gameengine\gameengine.cpp(76): warning C4244: 'argument' : conversion from 'GLfloat' to 'int', possible loss of data
+         GameObject.cpp
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         Clock.cpp
          Camera.cpp
          GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
          Generating Code...
-         Skipping... (no relevant changes detected)
-         SceneGraph.cpp
-         GameEngine.cpp
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\GameDev\Graphics\MazeGame\Debug\GameEngine.lib" SDL2.lib SDL2main.lib glew32.lib OpenGL32.lib assimp.lib /NOLOGO Debug\Camera.obj
          Debug\Clock.obj
@@ -39,4 +56,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.03
+Time Elapsed 00:00:10.81

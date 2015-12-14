@@ -1,1 +1,42 @@
-﻿
+﻿Build started 2015-12-14 15:48:10.
+     1>Project "C:\GameDev\Graphics\MazeGame\GameEngine\GameEngine.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp GameEngine.cpp SceneGraph.cpp
+         Camera.cpp
+         GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         SceneGraph.cpp
+         GameEngine.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\GameDev\Graphics\MazeGame\Debug\GameEngine.lib" SDL2.lib SDL2main.lib glew32.lib OpenGL32.lib assimp.lib /NOLOGO Debug\Camera.obj
+         Debug\Clock.obj
+         Debug\GameObject.obj
+         Debug\GameEngine.obj
+         Debug\GLSLProgram.obj
+         Debug\InputManager.obj
+         Debug\Loader.obj
+         Debug\LogManager.obj
+         Debug\Mesh.obj
+         Debug\Model.obj
+         Debug\OpenGLRenderer.obj
+         Debug\picoPNG.obj
+         Debug\PointLight.obj
+         Debug\ResourceManager.obj
+         Debug\SceneGraph.obj
+         Debug\Timer.obj
+     1>glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+     1>glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+     1>OpenGL32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+     1>OpenGL32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+     1>assimp.lib(assimp.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+     1>assimp.lib(assimp.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+     1>Loader.obj : warning LNK4006: "public: enum aiReturn __thiscall aiMaterial::GetTexture(enum aiTextureType,unsigned int,struct aiString *,enum aiTextureMapping *,unsigned int *,float *,enum aiTextureOp *,enum aiTextureMapMode *)const " (?GetTexture@aiMaterial@@QBE?AW4aiReturn@@W4aiTextureType@@IPAUaiString@@PAW4aiTextureMapping@@PAIPAMPAW4aiTextureOp@@PAW4aiTextureMapMode@@@Z) already defined in assimp.lib(assimp.dll); second definition ignored
+     1>Loader.obj : warning LNK4006: "public: unsigned int __thiscall aiMaterial::GetTextureCount(enum aiTextureType)const " (?GetTextureCount@aiMaterial@@QBEIW4aiTextureType@@@Z) already defined in assimp.lib(assimp.dll); second definition ignored
+     1>Loader.obj : warning LNK4006: "public: struct aiScene const * __thiscall Assimp::Importer::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,unsigned int)" (?ReadFile@Importer@Assimp@@QAEPBUaiScene@@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@I@Z) already defined in assimp.lib(assimp.dll); second definition ignored
+         GameEngine.vcxproj -> C:\GameDev\Graphics\MazeGame\Debug\GameEngine.lib
+     1>Done Building Project "C:\GameDev\Graphics\MazeGame\GameEngine\GameEngine.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.03

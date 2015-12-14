@@ -12,12 +12,12 @@ public:
 
 	virtual void SetLocalPosition(const glm::vec3& position) override;
 	void SetUp(const glm::vec3& up);
-	void SetLookAt(const glm::vec3& lookAt);
+	void SetForward(const glm::vec3& lookAt);
 	void ForceUpdate();
 
 	const glm::vec3& GetUp();
 	const glm::vec3& GetForward();
-	const glm::vec3& GetLookAt();
+	const glm::vec3 GetRight();
 	const glm::mat4& GetModelView();
 	const glm::mat4& GetProjection();
 	const GLfloat& GetWindowWidth();
@@ -26,7 +26,6 @@ public:
 	Camera(AbstractRenderer* renderer, GLfloat width, GLfloat height);
 private:
 	AbstractRenderer* m_renderer;
-	glm::vec3 m_front;
 	glm::vec3 m_up;
 	glm::vec3 m_forward;
 	glm::mat4 m_viewMatrix;

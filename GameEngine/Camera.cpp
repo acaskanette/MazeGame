@@ -4,9 +4,8 @@
 Camera::Camera(AbstractRenderer* renderer, GLfloat width, GLfloat height) {
 	m_renderer = renderer;
 	m_position = glm::vec3(0.0F, 0.0F, 15.0F);
-	m_front = glm::vec3(0.0F, 0.0F, -1.0F);
+	m_forward = glm::vec3(0.0F, 0.0F, -1.0F);
 	m_up = glm::vec3(0.0F, 1.0F, 0.0F);
-	m_forward = m_front - m_position;
 	m_windowWidth = width;
 	m_windowHeight = height;
 	m_needsUpdate = true;
@@ -14,8 +13,7 @@ Camera::Camera(AbstractRenderer* renderer, GLfloat width, GLfloat height) {
 
 void Camera::UpdateMe(GameTime& gameTime) {
 	if (m_needsUpdate) {
-		m_forward = m_front - m_position;
-		m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
+		m_viewMatrix = glm::lookAt(m_position, m_position + m_forward, m_up);
 		m_projectionMatrix = glm::perspective(70.0f, m_windowWidth / m_windowHeight, 0.1f, 200.0f); // angle, aspect ratio, near, far
 		
 		glUniform3f(m_renderer->GetShader()->GetUniformLocation("cameraPosition"), GetLocalPosition().x, GetLocalPosition().y, GetLocalPosition().z);
@@ -36,8 +34,8 @@ void Camera::SetUp(const glm::vec3& up) {
 	m_needsUpdate = true;
 }
 
-void Camera::SetLookAt(const glm::vec3& lookAt) {
-	m_front = lookAt;
+void Camera::SetForward(const glm::vec3& lookAt) {
+	m_forward = lookAt;
 	m_needsUpdate = true;
 }
 
@@ -53,8 +51,8 @@ const glm::vec3& Camera::GetForward() {
 	return m_forward;
 }
 
-const glm::vec3& Camera::GetLookAt() {
-	return m_front;
+const glm::vec3 Camera::GetRight() {
+	return glm::normalize(glm::cross(m_forward, m_up));
 }
 
 const glm::mat4& Camera::GetModelView() {

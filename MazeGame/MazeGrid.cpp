@@ -1,7 +1,7 @@
 #include "MazeGrid.h"
 #include "DoorObject.h"
 
-int grid[GRIDSIZE*GRIDSIZE] = {		// 0 = empty, 1 = wall, 2 = start, 3 = end, 4 = object1, 5 = object2
+int grid[GRIDSIZE*GRIDSIZE] = {		// 0 = empty, 1 = wall, 2 = start, 3 = end, 4 = object1(door), 5 = object2(key)
 	1,1,1,1,1,1,1,1,1,1,1,
 	1,1,3,1,1,1,1,1,1,1,1,
 	1,1,0,0,0,0,0,0,0,1,1,

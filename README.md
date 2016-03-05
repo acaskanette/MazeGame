@@ -2,4 +2,4 @@
 C++ OpenGL project using shaders.
 
 I Primarily worked on:
-MazeGrid, MazeGridLocation classes
+MazeGrid, MazeGridLocation and their instantiated Game Object classes
